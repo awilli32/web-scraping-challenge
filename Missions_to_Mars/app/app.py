@@ -9,11 +9,9 @@ app = Flask(__name__)
 executable_path = {'executable_path': ChromeDriverManager().install()}
 browser = Browser('chrome', **executable_path, headless=False)
 
-# Initialize PyMongo to work with MongoDBs
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 
-# Connect to mars_app database
 db = client.mars_app
 
 @app.route("/")

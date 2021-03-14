@@ -23,19 +23,15 @@ def scrape_all():
         "last_modified": dt.datetime.now()
     }
 
-    # Stop webdriver and return data
     browser.quit()
     return data
 
 
 def mars_news(browser):
 
-    # Scrape Mars News
-    # Visit the mars nasa news site
     url = 'https://mars.nasa.gov/news/'
     browser.visit(url)
 
-    # Convert the browser html to a soup object and then quit the browser
     html = browser.html
     news_soup = soup(html, 'html.parser')
 
@@ -87,13 +83,13 @@ def featured_image(browser):
 def mars_facts():
     # Add try/except for error handling
     try:
-        # use 'read_html' to scrape the facts table into a dataframe
+
         df = pd.read_html('http://space-facts.com/mars/')[0]
 
     except BaseException:
         return None
 
-    # assign columns and set index of dataframe
+
     df.columns = ['Description', 'Mars']
     df.set_index('Description', inplace=True)
 
@@ -102,14 +98,13 @@ def mars_facts():
 
 
 def hemispheres(browser):
-    # A way to break up long strings
     url = (
         "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
     )
 
     browser.visit(url)
 
-    # Click the link, find the sample anchor, return the href
+
     hemisphere_image_urls = []
     for i in range(4):
         # Find the elements on each loop to avoid a stale element exception
@@ -127,7 +122,6 @@ def scrape_hemisphere(html_text):
     # parse html text
     hemi_soup = soup(html_text, "html.parser")
 
-    # adding try/except for error handling
     try:
         title_elem = hemi_soup.find("h2", class_="title").get_text()
         sample_elem = hemi_soup.find("a", text="Sample").get("href")
@@ -146,5 +140,4 @@ def scrape_hemisphere(html_text):
 
 
 if __name__ == "__main__":
-    # If running as script, print scraped data
     print(scrape_all())
